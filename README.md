@@ -1,0 +1,1 @@
+# blog_project_dev_place

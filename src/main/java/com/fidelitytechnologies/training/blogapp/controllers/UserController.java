@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostDto;
+import com.fidelitytechnologies.training.blogapp.model.dto.TagDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.UserDto;
+import com.fidelitytechnologies.training.blogapp.services.CategoryService;
 import com.fidelitytechnologies.training.blogapp.services.PostService;
+import com.fidelitytechnologies.training.blogapp.services.TagService;
 import com.fidelitytechnologies.training.blogapp.services.UserService;
 
 /**
@@ -34,6 +38,12 @@ public class UserController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private TagService tagService;
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	/**
 	 * 
@@ -73,5 +83,34 @@ public class UserController {
 		return "Delete OK";
 	}
 	
+	
+	
+	@PostMapping("/tag/create")
+	public ResponseEntity<TagDto> createTag(@RequestBody TagDto tag) {
+		tag = tagService.createTag(null, tag);
+		
+		return new ResponseEntity<TagDto>(tag, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/tag/delete/{id}")
+	public String deleteTag(@PathVariable("id") Long id) {
+		tagService.deleteTagByID(null, id);
+		return "Delete OK";
+	}
+	
+	
+	@PostMapping("/category/create")
+	public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto category) {
+		category = categoryService.createCategory(null, category);
+		
+		return new ResponseEntity<CategoryDto>(category, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/category/delete/{id}")
+	public String deleteCategory(@PathVariable("id") Long id) {
+		categoryService.deleteCategoryByID(null, id);
+		
+		return "Delete OK";
+	}
 
 }

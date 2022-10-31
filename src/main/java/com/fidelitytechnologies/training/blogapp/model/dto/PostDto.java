@@ -31,6 +31,7 @@ public class PostDto implements FactoryDTO {
 	private String content;
 	private String metaTitle;
 	private String summary;
+	private String imageUrl;
 	
 	private List<CategoryDto> categories;
 	private List<TagDto> tags;
@@ -80,6 +81,14 @@ public class PostDto implements FactoryDTO {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}	
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public List<CategoryDto> getCategories() {

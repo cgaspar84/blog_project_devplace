@@ -1,0 +1,204 @@
+:root {
+    --main-color: #27AE60;
+    --sub-header-font-color: #6CAA7F;
+    --nav-bar-linecolor: #2ECC71;
+    --nav-bar-iconcolor: #7ACA8D;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =============================================== GLOBAL STYLES */
+h1 {
+    font-family: 'Acme',sans-serif;
+    font-size: 6.5vw;
+}
+
+h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: 1.1rem;
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    word-spacing: 0.4vw;
+}
+
+h6 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--sub-header-font-color);
+}
+
+p {
+    font-size: 1rem;
+    font-family: 'Karla', sans-serif;
+    line-height: 1.5rem;
+}
+
+hr {
+    background: var(--main-color);
+    color: var(--main-color);
+    height: 0.07rem;
+}
+
+/* =============================================== BODY SECTION */
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+header .intro {
+    position: relative;
+}
+
+header .intro .head {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+header .intro .head h1 {
+    color: #000;
+}
+
+header .intro .head h6 {
+    color: var(--main-color);
+    letter-spacing: 0.3rem;
+}
+
+header .navbar .navbar-nav .nav-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: var(--nav-bar-linecolor);
+    transition: width 0.3s;
+}
+
+header .navbar .navbar-nav .nav-link:hover::after {
+    width: 60%;
+    height: 2px;
+    background: var(--nav-bar-linecolor);
+    transition: width 0.3s;
+    border-bottom: 2px solid var(--main-color);
+}
+
+header .navbar .navbar-nav .dropdown-toggle::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: white !important;  
+    
+}
+
+header .navbar .navbar-nav .dropdown-toggle:hover::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: white !important;
+    border-bottom: 0;
+    
+}
+
+header .navbar .navbar-nav i {
+    font-size: 1.2rem;
+    color: var(--nav-bar-iconcolor);
+    cursor: pointer;
+}
+
+
+.featured .row .one {
+    height: 300px;
+}
+
+
+.featured .row .one img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    box-sizing: border-box;
+    object-fit: cover;
+}
+
+.featured .row .one .text {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: relative;
+    bottom: 50%;
+}
+
+.featured .row .one .text p {
+   letter-spacing: 0.2rem;
+   line-height: 2px; 
+}
+
+.featured .row .one .text a {
+    text-decoration: none;
+    border-style: none;
+    color: #fff;
+    font-size: 0.9rem;
+} 
+
+.featured .row .one .text a::after {
+    content: "";
+    display: block;
+    width: 30%;
+    height: 2px;
+    background: var(--nav-bar-linecolor);    
+}
+
+.blog .row .post a {
+    font-size: 0.9rem;
+    color: var(--main-color);
+    font-weight: bold;
+    text-decoration: none;
+    border-style: none;
+}
+
+.blog .row .sidebar .side2 .row .sidetext h4 {
+    font-size: 1rem;
+}
+
+.blog .row .sidebar .side2 .row .sidetext a {
+    text-decoration: none;
+    border-style: none;
+    color: var(--sub-header-font-color);
+    font-size: 0.8rem;
+}
+
+.blog .side3 .one {
+    height: 300px;
+    position: relative;
+}
+
+.blog .side3 .one img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    box-sizing: border-box;
+    object-fit: cover;
+}
+
+.blog .side3 .one .text {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -100%;
+    left: 0;
+    padding: 10rem 1.1rem 0 1.1rem;
+}
+
+.footer a {
+    text-decoration: none;
+}

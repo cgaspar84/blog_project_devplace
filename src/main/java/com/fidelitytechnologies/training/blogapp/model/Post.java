@@ -12,9 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -29,7 +31,7 @@ import javax.persistence.Table;
 public class Post {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name="title")
 	private String title;
@@ -47,8 +49,11 @@ public class Post {
 	private Date updatedAt;
 	@Column(name="published_at")
 	private Date publishedAt;
+	@Lob
 	@Column(name="content")
 	private String content;
+	@Column(name="image_url")
+	private String imageUrl;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)	
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_post_user"))
@@ -215,6 +220,20 @@ public class Post {
 		this.content = content;
 	}
 	
+	
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+
+
 	public void addTag(Tag tag) {
 		tags.add(tag);
 		tag.getPosts().add(this);

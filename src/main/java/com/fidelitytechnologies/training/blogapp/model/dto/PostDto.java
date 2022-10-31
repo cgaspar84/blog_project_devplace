@@ -119,14 +119,7 @@ public class PostDto implements FactoryDTO {
 		return new PropertyMap<Post, PostDto>() {
 			@Override
 			protected void configure() {
-				/*
-				Converter<Post, Integer> getSize = new AbstractConverter<Post, Integer>() {
-					@Override
-					protected Integer convert(Post post) {
-						return post.getTags().size();
-					}
-				};*/
-				
+								
 				Converter<Post, List<TagDto>> mapTags = new AbstractConverter<Post, List<TagDto>>() {
 
 					@Override
@@ -143,9 +136,7 @@ public class PostDto implements FactoryDTO {
 						return utils.mapList(new ArrayList<>(post.getCategories()), CategoryDto.class);
 					}
 				};
-				
-				
-				//using(getSize).map(source, destination.get);
+												
 				using(mapTags).map(source, destination.getTags());
 				using(mapCategories).map(source, destination.getCategories());
 				

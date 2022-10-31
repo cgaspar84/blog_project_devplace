@@ -3,6 +3,8 @@
  */
 package com.fidelitytechnologies.training.blogapp.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
+import com.fidelitytechnologies.training.blogapp.model.dto.PostCommentDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.TagDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.UserDto;
@@ -83,6 +86,22 @@ public class UserController {
 		return "Delete OK";
 	}
 	
+	@GetMapping("/post/search_by_tag/{tag}")
+	public List<PostDto> searchPostByTag(@PathVariable String tag) {
+		return postService.getPostsByTag(tag);
+	}
+	
+	@GetMapping("/post/search_by_category/{category}")
+	public List<PostDto> searchPostByCategory(@PathVariable String category) {
+		return postService.getPostsByCategory(category);
+	}
+	
+	@PostMapping("/post/comment/create")
+	public ResponseEntity<PostCommentDto> createPostComment(@RequestBody PostCommentDto postComment) {
+		postComment = postService.createPostComment(null, postComment);
+				
+		return new ResponseEntity<PostCommentDto>(postComment, HttpStatus.OK);
+	}
 	
 	
 	@PostMapping("/tag/create")

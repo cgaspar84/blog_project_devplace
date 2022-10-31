@@ -3,6 +3,8 @@
  */
 package com.fidelitytechnologies.training.blogapp.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.fidelitytechnologies.training.blogapp.model.Category;
@@ -13,4 +15,5 @@ import com.fidelitytechnologies.training.blogapp.model.Category;
  */
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
+	public Optional<Category> getByName(String name);
 }

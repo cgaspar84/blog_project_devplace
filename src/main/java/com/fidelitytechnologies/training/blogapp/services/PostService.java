@@ -16,13 +16,16 @@ import org.springframework.stereotype.Service;
 import com.fidelitytechnologies.training.blogapp.errors.ValidateException;
 import com.fidelitytechnologies.training.blogapp.model.Category;
 import com.fidelitytechnologies.training.blogapp.model.Post;
+import com.fidelitytechnologies.training.blogapp.model.PostComment;
 import com.fidelitytechnologies.training.blogapp.model.Tag;
 import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.MappingUtils;
+import com.fidelitytechnologies.training.blogapp.model.dto.PostCommentDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.TagDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.UserDto;
 import com.fidelitytechnologies.training.blogapp.repositories.CategoryRepository;
+import com.fidelitytechnologies.training.blogapp.repositories.PostCommentRepository;
 import com.fidelitytechnologies.training.blogapp.repositories.PostInteractionRepository;
 import com.fidelitytechnologies.training.blogapp.repositories.PostRepository;
 import com.fidelitytechnologies.training.blogapp.repositories.TagRepository;
@@ -42,6 +45,9 @@ public class PostService {
 	
 	@Autowired
 	private CategoryRepository category_repository;
+	
+	@Autowired
+	private PostCommentRepository comment_repository;
 	
 	@Autowired
 	private PostInteractionRepository post_interation_repository;
@@ -135,6 +141,18 @@ public class PostService {
 		return resul;
 	}
 	
+	public PostCommentDto createPostComment(UserDto user, PostCommentDto newPostComment) {
+		//TODO Validar post con user
+		
+		ModelMapper mapper = new ModelMapper();
+		PostComment postComment = mapper.map(newPostComment, PostComment.class);
+		
+		this.comment_repository.save(postComment);
+		
+		PostCommentDto resul = mapper.map(postComment, PostCommentDto.class);
+		return resul;
+	}
+	
 	public PostDto modifyPost(UserDto user, Long id, PostDto modifyPost) {
 		//TODO Validar post con user
 		
@@ -198,6 +216,37 @@ public class PostService {
 		result = utils.mapList(postList, PostDto.class);
 		
 		return result;
+	}
+	
+	public List<PostDto> getPostsByTag(String tag) {
+		Optional<Tag> tagFound = tag_repository.getByName(tag);
+				
+		if (!tagFound.isPresent()) {
+			throw new ValidateException("Invalid tag");
+		}
+		
+		List<Post> postList = post_repository.findPostsByTag(tag);
+		
+		List<PostDto> result = new ArrayList<>();
+		MappingUtils utils = new MappingUtils();
+		result = utils.mapList(postList, PostDto.class);
+		return result;
+	}
+	
+	public List<PostDto> getPostsByCategory(String category) {
+		Optional<Category> categoryFound = category_repository.getByName(category);
+		
+		if (!categoryFound.isPresent()) {
+			throw new ValidateException("Invalid category");
+		}
+		
+		List<Post> postList = post_repository.findPostsByCategory(category);
+		
+		List<PostDto> result = new ArrayList<>();
+		MappingUtils utils = new MappingUtils();
+		result = utils.mapList(postList, PostDto.class);
+		return result;
+		
 	}
 	
 

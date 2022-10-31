@@ -42,6 +42,10 @@ public class PostComment {
 	@JoinColumn(foreignKey = @ForeignKey(name="fk_comment_post"))
 	private Post post;
 	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(foreignKey = @ForeignKey(name="fk_user_post"))
+	private User user;
+	
 	/**
 	 * 
 	 */

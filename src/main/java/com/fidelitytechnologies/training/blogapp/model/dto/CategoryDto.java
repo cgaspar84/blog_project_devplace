@@ -3,14 +3,19 @@
  */
 package com.fidelitytechnologies.training.blogapp.model.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author cgaspar
  *
  */
 public class CategoryDto implements FactoryDTO {
 
+	@ApiModelProperty(required = true)
 	private Long id;
+	@ApiModelProperty(required = false)
 	private String name;
+	@ApiModelProperty(required = false)
 	private String description;
 	/**
 	 * 

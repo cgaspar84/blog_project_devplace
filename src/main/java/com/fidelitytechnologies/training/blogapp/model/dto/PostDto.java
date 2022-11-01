@@ -35,6 +35,7 @@ public class PostDto implements FactoryDTO {
 	
 	private List<CategoryDto> categories;
 	private List<TagDto> tags;
+	private List<PostCommentDto> comments;
 	
 	/**
 	 * 
@@ -106,8 +107,16 @@ public class PostDto implements FactoryDTO {
 	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
 	}
-
 	
+	
+	public List<PostCommentDto> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<PostCommentDto> comments) {
+		this.comments = comments;
+	}
+
 	@Override
 	public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
 		mapper.addMappings(postMap(utils));
@@ -136,9 +145,18 @@ public class PostDto implements FactoryDTO {
 						return utils.mapList(new ArrayList<>(post.getCategories()), CategoryDto.class);
 					}
 				};
+				
+				Converter<Post, List<PostCommentDto>> mapComments = new AbstractConverter<Post, List<PostCommentDto>>() {
+					
+					@Override
+					protected List<PostCommentDto> convert(Post post) {
+						return utils.mapList(new ArrayList<>(post.getComments()), PostCommentDto.class);
+					}
+				};
 												
 				using(mapTags).map(source, destination.getTags());
 				using(mapCategories).map(source, destination.getCategories());
+				using(mapComments).map(source, destination.getComments());
 				
 			}
 		};

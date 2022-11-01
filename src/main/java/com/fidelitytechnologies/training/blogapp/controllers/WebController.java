@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostDto;
 import com.fidelitytechnologies.training.blogapp.services.PostService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * Main web controller for registered/unregistered users
@@ -35,6 +40,8 @@ public class WebController {
 		return "redirect:/index";
 	}
 	
+	@ApiOperation(value = "Web. Pagina index")	
+	@ApiResponse(code = 200, message="Template Index")
 	@GetMapping("/index")
 	public String index(Model model) {
 		
@@ -48,12 +55,7 @@ public class WebController {
 	public List<PostDto> getAllPosts() {	
 		
 		return postService.getAllPostsPublished();
-	}
+	}	
 	
-	
-	@GetMapping("/post/get/{id}")
-	public PostDto getPostSimple(@PathVariable("id") Long id) {
-		return postService.getPostByID(id);		
-	}
 
 }

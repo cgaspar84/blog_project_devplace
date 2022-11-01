@@ -12,18 +12,23 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.fidelitytechnologies.training.blogapp.errors.ValidateException;
 import com.fidelitytechnologies.training.blogapp.model.Category;
 import com.fidelitytechnologies.training.blogapp.model.Post;
 import com.fidelitytechnologies.training.blogapp.model.PostComment;
+import com.fidelitytechnologies.training.blogapp.model.PostInteraction;
 import com.fidelitytechnologies.training.blogapp.model.Tag;
+import com.fidelitytechnologies.training.blogapp.model.User;
 import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.MappingUtils;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostCommentDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostDto;
+import com.fidelitytechnologies.training.blogapp.model.dto.PostInteractionDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.TagDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.UserDto;
+import com.fidelitytechnologies.training.blogapp.model.flags.PostInterationFlags;
 import com.fidelitytechnologies.training.blogapp.repositories.CategoryRepository;
 import com.fidelitytechnologies.training.blogapp.repositories.PostCommentRepository;
 import com.fidelitytechnologies.training.blogapp.repositories.PostInteractionRepository;
@@ -141,18 +146,6 @@ public class PostService {
 		return resul;
 	}
 	
-	public PostCommentDto createPostComment(UserDto user, PostCommentDto newPostComment) {
-		//TODO Validar post con user
-		
-		ModelMapper mapper = new ModelMapper();
-		PostComment postComment = mapper.map(newPostComment, PostComment.class);
-		
-		this.comment_repository.save(postComment);
-		
-		PostCommentDto resul = mapper.map(postComment, PostCommentDto.class);
-		return resul;
-	}
-	
 	public PostDto modifyPost(UserDto user, Long id, PostDto modifyPost) {
 		//TODO Validar post con user
 		
@@ -161,7 +154,7 @@ public class PostService {
 		Optional<Post> searchPost = post_repository.findById(id);
 		
 		Post updatePost = null;
-		if (!searchPost.isEmpty()) {
+		if (searchPost.isPresent()) {
 			updatePost = searchPost.get();
 			
 			updatePost.setTitle(modifyPost.getTitle());
@@ -183,13 +176,106 @@ public class PostService {
 	}
 	
 	
-	
-	public void doPostLike(UserDto user, Long postID) {
+	public PostCommentDto createPostComment(UserDto user, PostCommentDto newPostComment) {
+		//TODO Validar post con user
 		
+		ModelMapper mapper = new ModelMapper();
+		PostComment postComment = mapper.map(newPostComment, PostComment.class);
+		
+		Optional<Post> postFound = post_repository.findById(newPostComment.getPost_id());
+		//Optional<User> userFound = user_repository.findById(newPostComment.getUser_id());
+		if (!postFound.isPresent()) {
+			throw new ValidateException("No such psot found");
+		} else {
+			postComment.setPost(postFound.get());
+		}
+		
+		this.comment_repository.save(postComment);
+		
+		PostCommentDto resul = mapper.map(postComment, PostCommentDto.class);
+		return resul;
 	}
 	
-	public void doPostDislike(UserDto user, Long postID) {
+	public PostCommentDto getPostComment(UserDto user, Long id) {
+		Optional<PostComment> commentFound = comment_repository.findById(id);
 		
+		if (commentFound.isPresent()) {
+			ModelMapper mapper = new ModelMapper();
+			PostCommentDto postCommentDto = mapper.map(commentFound.get(), PostCommentDto.class);
+			
+			return postCommentDto;
+		} else {
+			throw new ValidateException("No comment found");
+		}
+	}
+	
+	public PostCommentDto modifyPostComment(UserDto user, Long id, PostCommentDto modifyComment) {
+		ModelMapper mapper = new ModelMapper();
+		Optional<PostComment> searchPostComment = comment_repository.findById(id);
+		
+		PostComment updateComment = null;
+		if (searchPostComment.isPresent()) {
+			updateComment = searchPostComment.get();
+			
+			updateComment.setTitle(modifyComment.getTitle());
+			updateComment.setContent(modifyComment.getContent());
+			updateComment.setPublishedAt(new Date());
+			
+			comment_repository.save(updateComment);
+		} else {
+			throw new ValidateException("Invalid post comment ID");
+		}
+		
+		PostCommentDto resul = mapper.map(updateComment, PostCommentDto.class);
+		return resul;
+	}
+	
+	public void deletePostCommentByID(UserDto user, Long id) {
+		comment_repository.deleteById(id);
+	}
+	
+	
+	
+	
+	public PostInteractionDto doPostLike(UserDto user, Long postID) {
+		Optional<Post> postFound = post_repository.findById(postID);
+		
+		if (!postFound.isPresent()) {
+			throw new ValidateException("Invalid post ID");
+		}
+		
+		PostInteraction postLike = new PostInteraction();
+		
+		postLike.setFlags(PostInterationFlags.LIKE);
+		postLike.setPost(postFound.get());
+		
+		post_interation_repository.save(postLike);
+		
+		ModelMapper mapper = new ModelMapper();
+		PostInteractionDto resul = mapper.map(postLike, PostInteractionDto.class);
+		resul.setPost_id(postFound.get().getId());
+		return resul;
+	}
+	
+	public PostInteractionDto doPostDislike(UserDto user, Long postID) {
+		Optional<Post> postFound = post_repository.findById(postID);
+		
+		if (!postFound.isPresent()) {
+			throw new ValidateException("Invalid post ID");
+		}
+		
+		
+		PostInteraction postDislike = new PostInteraction();
+		
+		postDislike.setFlags(PostInterationFlags.DISLIKE);
+		postDislike.setPost(postFound.get());
+		
+		post_interation_repository.save(postDislike);
+		
+		ModelMapper mapper = new ModelMapper();
+		PostInteractionDto resul = mapper.map(postDislike, PostInteractionDto.class);
+		resul.setPost_id(postFound.get().getId());
+		return resul;
 	}
 	
 	public PostDto getPostByID(Long id) {

@@ -12,15 +12,12 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
 import com.fidelitytechnologies.training.blogapp.errors.ValidateException;
 import com.fidelitytechnologies.training.blogapp.model.Category;
 import com.fidelitytechnologies.training.blogapp.model.Post;
 import com.fidelitytechnologies.training.blogapp.model.PostComment;
 import com.fidelitytechnologies.training.blogapp.model.PostInteraction;
 import com.fidelitytechnologies.training.blogapp.model.Tag;
-import com.fidelitytechnologies.training.blogapp.model.User;
 import com.fidelitytechnologies.training.blogapp.model.dto.CategoryDto;
 import com.fidelitytechnologies.training.blogapp.model.dto.MappingUtils;
 import com.fidelitytechnologies.training.blogapp.model.dto.PostCommentDto;

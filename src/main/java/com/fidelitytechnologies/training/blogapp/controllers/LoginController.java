@@ -3,10 +3,13 @@
  */
 package com.fidelitytechnologies.training.blogapp.controllers;
 
+import org.aspectj.apache.bcel.classfile.Module.Uses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,6 +32,20 @@ public class LoginController {
 	 */
 	public LoginController() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@GetMapping("/login")
+	public String login(Model model) {
+		UserDto user = new UserDto();
+		model.addAttribute("user", user);
+		return "login";
+	}
+	
+	@GetMapping("/registration")
+	public String register(Model model) {
+		UserDto user = new UserDto();
+		model.addAttribute("user", user);
+		return "register";
 	}
 	
 	@PostMapping("/registration/user/create")

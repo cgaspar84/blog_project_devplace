@@ -32,6 +32,19 @@ public class UserService {
 	 */
 	public UserService() {
 		// TODO Auto-generated constructor stub
+	}	
+	
+	public UserDto createUser(UserDto newUser) {
+		ModelMapper mapper = new ModelMapper();
+		User user = mapper.map(newUser, User.class);
+		
+		// Generate encrypt user password
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
+		this.user_repository.save(user);
+		
+		UserDto resul = mapper.map(user, UserDto.class);
+		return resul;
 	}
 	
 	public UserDto getUserProfile(Long id) {
@@ -47,17 +60,15 @@ public class UserService {
 		}
 	}
 	
-	public UserDto createUser(UserDto newUser) {
-		ModelMapper mapper = new ModelMapper();
-		User user = mapper.map(newUser, User.class);
+	public User getUserData(String username) {
+		Optional<User> userFound = user_repository.getByUsername(username);
 		
-		// Generate encrypt user password
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		if (!userFound.isPresent()) {
+			return null;
+		} else {
+			return userFound.get();
+		}
 		
-		this.user_repository.save(user);
-		
-		UserDto resul = mapper.map(user, UserDto.class);
-		return resul;
 	}
 
 }

@@ -39,8 +39,8 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-@RequestMapping("/registered_area")
-public class UserController {
+@RequestMapping("/v1/blog_manager_area")
+public class PostController {
 
 	@Autowired
 	private UserService userService; 
@@ -57,7 +57,7 @@ public class UserController {
 	/**
 	 * 
 	 */
-	public UserController() {
+	public PostController() {
 		// TODO Auto-generated constructor stub
 	}
 	

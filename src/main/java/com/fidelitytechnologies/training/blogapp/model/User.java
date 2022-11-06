@@ -6,20 +6,31 @@ package com.fidelitytechnologies.training.blogapp.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 
 /**
  * @author cgaspar
  *
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name="USER")
+@DiscriminatorColumn(name="user_kind",
+		discriminatorType = DiscriminatorType.INTEGER)
 public class User {
 
 	@Id
@@ -33,6 +44,8 @@ public class User {
 	private String mobile;
 	@Column(name="email")
 	private String email;
+	@Column(name="user_name")
+	private String username;
 	@Column(name="password_hash")
 	private String password;
 	@Column(name="registered_at")
@@ -51,6 +64,12 @@ public class User {
 	
 	@OneToMany(mappedBy = "user")
 	List<PostInteraction> postInteractions;
+	
+	
+	@ManyToMany(cascade = CascadeType.MERGE)
+	@JoinTable(name="USERS_BY_ROLE", joinColumns = @JoinColumn(name="user_id"),
+	inverseJoinColumns = @JoinColumn(name="role_id"))
+	List<Role> roles;
 	
 	/**
 	 * 
@@ -159,6 +178,30 @@ public class User {
 
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 	
 	

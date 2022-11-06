@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fidelitytechnologies.training.blogapp.model.User;
@@ -22,6 +23,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository user_repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	/**
 	 * 
@@ -41,6 +45,19 @@ public class UserService {
 			
 			return userDTO;
 		}
+	}
+	
+	public UserDto createUser(UserDto newUser) {
+		ModelMapper mapper = new ModelMapper();
+		User user = mapper.map(newUser, User.class);
+		
+		// Generate encrypt user password
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
+		this.user_repository.save(user);
+		
+		UserDto resul = mapper.map(user, UserDto.class);
+		return resul;
 	}
 
 }

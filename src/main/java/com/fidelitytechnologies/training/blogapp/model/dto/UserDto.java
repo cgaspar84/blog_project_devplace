@@ -22,6 +22,11 @@ public class UserDto implements Serializable {
 	private String intro;
 	private String profile;
 	
+	private String username;
+	private String password;
+	
+	private int kind;
+	
 	/**
 	 * 
 	 */
@@ -87,6 +92,30 @@ public class UserDto implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getKind() {
+		return kind;
+	}
+
+	public void setKind(int kind) {
+		this.kind = kind;
 	}
 
 	

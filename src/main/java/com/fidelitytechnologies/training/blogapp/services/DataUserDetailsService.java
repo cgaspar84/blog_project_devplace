@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.fidelitytechnologies.training.blogapp.configuration.JwtUser;
 import com.fidelitytechnologies.training.blogapp.model.Role;
 import com.fidelitytechnologies.training.blogapp.model.User;
 
@@ -44,17 +45,19 @@ public class DataUserDetailsService implements UserDetailsService {
 		}
 		
 		return new ArrayList<>(roles);
-	}
+	}	
 	
-	private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), false, false, false, false, authorities);
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = user_service.getUserData(username);
 		List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
-		return buildUserForAuthentication(user, authorities);
+		
+		//TODO Sample of role (implement on DB!!)
+		// ROLE_ADMIN
+		// ROLE_COMMON
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		return new JwtUser(user.getUsername(), user.getPassword(), authorities); //buildUserForAuthentication(user, authorities);
 	}
 
 }

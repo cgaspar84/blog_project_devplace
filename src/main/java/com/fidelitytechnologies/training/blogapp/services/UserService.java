@@ -24,8 +24,8 @@ public class UserService {
 	@Autowired
 	private UserRepository user_repository;
 	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	//@Autowired
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class UserService {
 		User user = mapper.map(newUser, User.class);
 		
 		// Generate encrypt user password
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		//user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
 		this.user_repository.save(user);
 		
